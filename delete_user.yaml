@@ -1,0 +1,19 @@
+---
+- name: Deletar um usuário no Switch Cisco
+  hosts: all
+  gather_facts: no
+
+  vars:
+    username: teste
+    
+  tasks:
+    - name: Deletar usuario
+      ios_command:
+        commands:
+          - "config"
+          - "no username {{ username }}"
+          - "exit"
+          
+    - name: Save running to startup when modified
+      cisco.ios.ios_config:
+        save_when: always

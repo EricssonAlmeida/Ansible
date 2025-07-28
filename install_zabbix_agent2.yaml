@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Download zabbix agent2
+      win_get_url:
+        url: https://cdn.zabbix.com/zabbix/binaries/stable/6.0/6.0.12/zabbix_agent2-6.0.12-windows-amd64-openssl.msi
+        dest: C:\Users\Administrator\Desktop\zabbix_agent2.msi
+
+ 

@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install Update-Manager
+      ansible.builtin.apt:
+        name: update-manager-core
+        state: present
+
+    - name: Set LTS VESION on update-manager
+      ansible.builtin.shell:
+        cmd: |
+          sed -i 's/Prompt=normal/Prompt=lts/g' /etc/update-manager/release-upgrades
+          sed -i 's/Prompt=never/Prompt=lts/g' /etc/update-manager/release-upgrades
+
+    - name: Upgrade OS Ubuntu
+      command: do-release-upgrade -f DistUpgradeViewNonInteractive
+

@@ -1,0 +1,12 @@
+---
+- name: Backup switch SG 250
+  hosts: all
+  gather_facts: false
+  
+  tasks: 
+    - name: Enviado para o servidor  
+      cisco.ios.ios_command:
+        #commands: copy running-config tftp://10.102.15.30/{{ hostname_bkp }}.txt
+        #retries: 2
+        
+    

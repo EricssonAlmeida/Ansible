@@ -1,0 +1,14 @@
+- hosts: all
+  vars:
+    user: "{{ newuser }}"
+    password: "{{ newpassword }}"
+  tasks:
+  - name: Create a User.
+    become: yes
+    user:
+      name: "{{ user }}"
+      state: present
+      password: "{{ password | password_hash('sha512') }}"
+          
+
+          

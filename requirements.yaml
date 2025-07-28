@@ -1,0 +1,4 @@
+---
+collections:
+- name: dellemc.os6
+- name: cisco.ios

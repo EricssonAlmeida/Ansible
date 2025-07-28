@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Remover usuário ao grupo de superusuários
+    block:
+      - name: Tentando remover do grupo sudo
+        ansible.builtin.shell:
+          cmd: "gpasswd -d user01 sudo"
+    rescue:
+      - name: Tentando remover do grupo wheel
+        ansible.builtin.shell:
+          cmd: "gpasswd -d user01 wheel"

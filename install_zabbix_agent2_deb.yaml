@@ -1,0 +1,70 @@
+---
+- hosts: all
+  become: true
+  tasks:
+#############
+   # - name: Update apt repo and cache on all hosts
+    #  apt: 
+     #   update_cache: yes 
+      #  force_apt_get: yes 
+       # cache_valid_time: 3600
+################
+    - name: Download zabbix Agent2 Conf
+      ansible.builtin.get_url:
+        url: http://ocs.lojasmm.com.br/download/zabbix/zabbix_agent2.conf
+        dest: /opt/zabbix_agent2.conf
+        mode: '0440'
+
+    - name: Download zabbix Agent2 Debian 10
+      ansible.builtin.get_url:
+        url: https://repo.zabbix.com/zabbix/6.3/debian/pool/main/z/zabbix/zabbix-agent2_6.4.0~beta6-1%2Bdebian11_amd64.deb
+        dest: /opt/zabbix-agent2_amd64.deb
+        mode: '0440'
+##################
+   # - name: Disable service zabbix-agent 
+    #  ansible.builtin.service:
+     #   name: zabbix-agent
+      #  state: stopped
+
+    #- name: Disable systemctl zabbix-agent 
+     # ansible.builtin.systemd:
+      #  name: zabbix-agent
+       # enabled: no
+#
+ #   - name: Remove zabbix-agent package
+  #    ansible.builtin.apt:
+   #     name: zabbix-agent
+    #    state: absent
+     #   autoremove: yes
+      #  purge: yes
+##################
+    - name: Install zabbix agent2
+      ansible.builtin.apt:
+        deb: /opt/zabbix-agent2_amd64.deb
+
+    - name: Disable service zabbix-agent2
+      ansible.builtin.service:
+        name: zabbix-agent2
+        state: stopped
+        
+    - name: Disable systemctl zabbix-agent 2
+      ansible.builtin.systemd:
+        name: zabbix-agent2
+        enabled: no
+        
+    - name: Copiar template de configuração pronto zabbix agent2
+      ansible.builtin.shell:
+        cmd: 
+          mv /opt/zabbix_agent2.conf /etc/zabbix/
+
+    - name: Enable systemctl zabbix-agent2 
+      ansible.builtin.systemd:
+        name: zabbix-agent2
+        enabled: yes
+
+    - name: Enable service zabbix-agent 
+      ansible.builtin.service:
+        name: zabbix-agent2
+        state: started
+
+#######################
